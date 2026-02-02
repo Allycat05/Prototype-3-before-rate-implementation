@@ -32,7 +32,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "318"
             endingLineNumber = "318"
-            landmarkName = "AcidSequencerAudioProcessor::processBlock(buffer, midiMessages)"
+            landmarkName = "AcidSequencerAudioProcessor::clearSequence()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
