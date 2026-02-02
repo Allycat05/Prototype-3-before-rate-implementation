@@ -20,7 +20,7 @@ public:
     
 public:
     //==============================================================================
-    juce::AudioProcessorValueTreeState apvts; 
+    juce::AudioProcessorValueTreeState apvts; // Volume sliders
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
     //==============================================================================
     AcidSequencerAudioProcessor();
@@ -78,13 +78,7 @@ private:
         bool stepOn[8];
         bool isPlaying = false;
         int currentScale = 0;
-    
-        //Sequencer rate
-//        double ppqPosition = -1.0;
-//        double lastPpqStepIndex = -1.0;
-//        double currentBpm = 120.0;
-//        double ppqPerStep = 0.25;
-    
+        
         //Sequencer clock
         int currentStep = 0;
         double samplesPerStep = 0.0;

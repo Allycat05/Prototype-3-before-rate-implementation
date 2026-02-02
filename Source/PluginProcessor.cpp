@@ -111,7 +111,7 @@ void AcidSequencerAudioProcessor::prepareToPlay (double sampleRate, int samplesP
         stepPortamento[i] = 0.0f;
     }
     
-    //SamplesPerStep from rate
+    //SamplesPerStep from tempo
     double bpm = *apvts.getRawParameterValue("rate");
     double beatsPerSecond = bpm / 60.0;
     double stepsPerSecond = beatsPerSecond * 4.0; // 4 steps per beat (16th notes)
@@ -151,7 +151,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AcidSequencerAudioProcessor:
     
     constexpr int VERSION = 1;
     
-    // Row 1: Waveform and Rate
+    // Row 1: Waveform and Tempo
     
         params.push_back(std::make_unique<juce::AudioParameterChoice>(
             ParameterID("waveform", VERSION), "Waveform", juce::StringArray("Saw", "Square", "Sine"), 0));
@@ -250,82 +250,65 @@ juce::AudioProcessorValueTreeState::ParameterLayout AcidSequencerAudioProcessor:
 }
 
 //==============================================================================
-void AcidSequencerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
-                                               juce::MidiBuffer& midiMessages)
-{
-    juce::ScopedNoDenormals noDenormals;
-    juce::ignoreUnused(midiMessages);
-
-    const int numChannels = buffer.getNumChannels();
-    const int numSamples  = buffer.getNumSamples();
-    const double sampleRate = getSampleRate();
-
-    constexpr double twoPi = 2.0 * juce::MathConstants<double>::pi;
-
-   // if (auto* playHead = getPlayHead())
+void AcidSequencerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
     {
-       // if (auto pos = playHead->getPosition())
+        juce::ScopedNoDenormals noDenormals;
+        juce::ignoreUnused(midiMessages);
+
+        auto numChannels = buffer.getNumChannels();
+        auto numSamples = buffer.getNumSamples();
+
+        constexpr double twoPi = 2.0 * juce::MathConstants<double>::pi;
+        
+//        const double freq = 440.0; // concert pitch A4
+//        phaseInc = freq * twoPi / getSampleRate();
+        
+        const double tempo = 120;
+        samplesPerStep = (60 / tempo) * getSampleRate();
+        
+        for (int i = 0; i < numSamples; ++i)
         {
-           // if (pos->getPpqPosition().hasValue())
-                //ppqPosition = *pos->getPpqPosition();
-
-           // if (pos->getBpm().hasValue())
-                //currentBpm = *pos->getBpm();
-
-           // isPlaying = pos->getIsPlaying();
-        }
-    }
-
-    if (!isPlaying)
-        //lastPpqStepIndex = -1.0;
-
-    for (int i = 0; i < numSamples; ++i)
-    {
-        //if (isPlaying && ppqPosition >= 0.0)
-        {
-           // const double ppqStepIndex = std::floor(ppqPosition / ppqPerStep);
-
-           // if (ppqStepIndex != lastPpqStepIndex)
+            float sample = 0.0;
+            
+            sample = std::sin(phasePos) * 0.1;
+            
+            sample *= gain;
+            
+            phasePos += phaseInc;
+            if(phasePos >= twoPi)
+                phasePos -= twoPi;
+            
+            // sequencer logic
+            sampleCounter++;
+            if (sampleCounter >= samplesPerStep)
             {
-               // lastPpqStepIndex = ppqStepIndex;
-
                 float pitch  = *apvts.getRawParameterValue("stepPitch" + std::to_string(currentStep));
                 float volume = *apvts.getRawParameterValue("stepVolume" + std::to_string(currentStep));
                 bool stepOn  = *apvts.getRawParameterValue("stepOn" + std::to_string(currentStep));
 
                 if (stepOn)
                 {
-                    const float frequency =
-                        juce::MidiMessage::getMidiNoteInHertz((int)pitch);
-
-                    phaseInc = frequency * twoPi / sampleRate;
+                    
+            float frequency = juce::MidiMessage::getMidiNoteInHertz((int)pitch);
+            phaseInc = frequency * twoPi / getSampleRate();
+                    
                     gain = volume;
                 }
                 else
                 {
                     gain = 0.0f;
                 }
-
+                
+                sampleCounter = 0;
                 currentStep++;
-                if (currentStep >= 8)
+                if (currentStep == 8)
                     currentStep = 0;
             }
 
-           // ppqPosition += currentBpm / (60.0 * sampleRate);
+            for (int ch = 0; ch < numChannels; ++ch)
+                buffer.setSample(ch, i, sample);
         }
-
-        float sample = std::sin(phasePos) * 0.1f;
-        sample *= gain;
-        
-        phasePos += phaseInc;
-        if (phasePos >= twoPi)
-            phasePos -= twoPi;
-
-        for (int ch = 0; ch < numChannels; ++ch)
-            buffer.setSample(ch, i, sample);
-        
     }
-}
     //==============================================================================
     
     void AcidSequencerAudioProcessor::clearSequence()

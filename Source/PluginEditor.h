@@ -56,9 +56,9 @@ private:
     juce::ComboBox waveformMenu;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> waveformAttachment;
     
-    //Rate
-    juce::Slider rateSlider;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> rateAttachment;
+    //Tempo
+    juce::Slider tempoSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> tempoAttachment;
     
     //Cutoff
     juce::OwnedArray<juce::Slider> cutoffSliders;
@@ -95,11 +95,6 @@ private:
     //Delay
     juce::Slider delaySlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> delayAttachment;
-    
-    //Pitch
-    juce::Slider pitchSlider;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> pitchAttachment;
-    
     
     //Reverb
     juce::Slider reverbSlider;

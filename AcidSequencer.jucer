@@ -10,14 +10,14 @@
       <GROUP id="{81EA6590-AE4B-F1B3-1F5B-B93EBF8688E3}" name="Resources">
         <FILE id="Gf4xQl" name="background.png" compile="0" resource="1" file="Resources/background.png"/>
       </GROUP>
-      <FILE id="PpK1oT" name="PluginProcessor.cpp" compile="1" resource="0"
-            file="Source/PluginProcessor.cpp"/>
-      <FILE id="hHrcth" name="PluginProcessor.h" compile="0" resource="0"
-            file="Source/PluginProcessor.h"/>
-      <FILE id="uVU1Zc" name="PluginEditor.cpp" compile="1" resource="0"
-            file="Source/PluginEditor.cpp"/>
-      <FILE id="NcS9Tm" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
+    <FILE id="nM7ljG" name="PluginEditor.cpp" compile="1" resource="0"
+          file="Source/PluginEditor.cpp"/>
+    <FILE id="UPzxgm" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    <FILE id="Pw5p3D" name="PluginProcessor.cpp" compile="1" resource="0"
+          file="Source/PluginProcessor.cpp"/>
+    <FILE id="IV1C8L" name="PluginProcessor.h" compile="0" resource="0"
+          file="Source/PluginProcessor.h"/>
   </MAINGROUP>
   <MODULES>
     <MODULE id="juce_analytics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

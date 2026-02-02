@@ -21,14 +21,14 @@ AcidSequencerAudioProcessorEditor::AcidSequencerAudioProcessorEditor (AcidSequen
     waveformAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(
         audioProcessor.apvts, "waveform", waveformMenu);// Connect slider to parameter
     
-    //Rate
-    rateSlider.setSliderStyle(juce::Slider::Rotary);
-    rateSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 0, 0); //No visual values for aesethics and clarity
-    rateSlider.setColour(juce::Slider::thumbColourId, juce::Colours::black);
-    addAndMakeVisible(rateSlider);
+    //Tempo
+    tempoSlider.setSliderStyle(juce::Slider::Rotary);
+    tempoSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 0, 0); //No visual values for aesethics and clarity
+    tempoSlider.setColour(juce::Slider::thumbColourId, juce::Colours::black);
+    addAndMakeVisible(tempoSlider);
 
-    rateAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
-        audioProcessor.apvts, "rate", rateSlider);
+    tempoAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.apvts, "tempo", tempoSlider);
 
     //Cutoff
     for (int i = 0; i < 8; ++i)
@@ -265,9 +265,9 @@ void AcidSequencerAudioProcessorEditor::resized()
     // ===== TOP SECTION ===========
     // =============================
 
-    // Waveform and Rate
+    // Waveform and Tempo
     waveformMenu.setBounds(15, 40, 80, 25);
-    rateSlider.setBounds(100, 10, 60, 80);
+    tempoSlider.setBounds(100, 10, 60, 80);
 
     // =============================
     // ===== FILTER / DRIVE ROW ====
@@ -362,7 +362,7 @@ void AcidSequencerAudioProcessorEditor::resized()
     releaseSlider.setBounds(1076, 320, 60, 80);
 
     // Single effects
-    pitchSlider.setBounds(859, 410, 60, 80);
+    //pitchSlider.setBounds(859, 410, 60, 80);
     delaySlider.setBounds(949, 410, 60, 80);
     reverbSlider.setBounds(1036, 410, 60, 80);
     
